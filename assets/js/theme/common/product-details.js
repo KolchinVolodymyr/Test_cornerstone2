@@ -136,7 +136,7 @@ export default class ProductDetails extends ProductDetailsBase {
             const type = value.getAttribute('data-product-attribute');
 
             if ((type === 'input-file' || type === 'input-text' || type === 'input-number') && value.querySelector('input').value === '' && required) {
-                unsatisfiedRequiredFields.push(value);
+                //unsatisfiedRequiredFields.push(value);
             }
 
             if (type === 'textarea' && value.querySelector('textarea').value === '' && required) {
@@ -381,7 +381,9 @@ export default class ProductDetails extends ProductDetailsBase {
      */
     addProductToCart(event, form) {
         const $addToCartBtn = $('#form-action-addToCart', $(event.target));
+
         const originalBtnVal = $addToCartBtn.val();
+        console.log('originalBtnVal', originalBtnVal);
         const waitMessage = $addToCartBtn.data('waitMessage');
 
         // Do not do AJAX if browser doesn't support FormData
@@ -407,7 +409,7 @@ export default class ProductDetails extends ProductDetailsBase {
                 .prop('disabled', false);
 
             this.$overlay.hide();
-
+            console.log('this',this)
             // Guard statement
             if (errorMessage) {
                 // Strip the HTML from the error message

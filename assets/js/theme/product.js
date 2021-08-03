@@ -26,7 +26,7 @@ export default class Product extends PageManager {
                 window.history.replaceState(null, document.title, window.location.pathname);
             }
         });
-
+        console.log('Product', this.context);
         let validator;
 
         // Init collapsible
