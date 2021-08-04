@@ -6,11 +6,37 @@ export default class Custom extends PageManager {
     onReady() {
 
 
-document.querySelector('#attribute_text_159').addEventListener('input', function(){
-    console.log('document.querySelector("#attribute_text_159").', document.querySelector('#attribute_text_159').value)
+document.querySelector('#attribute_text_162').addEventListener('input', function() {
+        /*
+        * Custom
+        */
+        const $productInputText = $('[id*="attribute_text"]');
+        //console.log('$productInputText', $productInputText);
+        const productInputTextValueLength = $productInputText.find('value').prevObject[0].value.length;
+        //console.log('productInputTextValueLength', productInputTextValueLength);
+        if(productInputTextValueLength>1) {
+            /**/
+            window.BCData.product_attributes.price.without_tax.value+10;
+            console.log('window.BCData.product_attributes.price.without_tax', window.BCData.product_attributes.price.without_tax.value);
+            const productId = $('[name="product_id"]').val();
+            console.log('productId', productId);
+
+            /**/
+        }
+
+
 });
 
 
+
+
+
+
+
+//document.querySelector('#attribute_text_159').addEventListener('input', function(){
+//    console.log('document.querySelector("#attribute_text_159").', document.querySelector('#attribute_text_159').value)
+//});
+//
 //                    /*input validation function */
 //                    function validate(e) {
 //                      const regex = /[A-Za-z ,.]/;

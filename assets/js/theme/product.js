@@ -26,25 +26,33 @@ export default class Product extends PageManager {
                 window.history.replaceState(null, document.title, window.location.pathname);
             }
         });
-        console.log('Product', this.context);
+
         let validator;
 
         // Init collapsible
         collapsibleFactory();
 
+        //watch common/product-details.js file
         this.productDetails = new ProductDetails($('.productView'), this.context, window.BCData.product_attributes);
+
+        //found the price on the page
+        console.log('window.BCData.product_attributes PRICE without_tax value', window.BCData.product_attributes.price.without_tax.value);
+
         this.productDetails.setProductVariant();
+
 
         videoGallery();
 
         this.bulkPricingHandler();
 
         const $reviewForm = classifyForm('.writeReview-form');
+        //console.log('$reviewForm', $reviewForm);
 
         if ($reviewForm.length === 0) return;
 
         const review = new Review($reviewForm);
 
+        //Review form
         $('body').on('click', '[data-reveal-id="modal-review-form"]', () => {
             validator = review.registerValidation(this.context);
             this.ariaDescribeReviewInputs($reviewForm);
@@ -67,10 +75,11 @@ export default class Product extends PageManager {
         $form.find('[data-input]').each((_, input) => {
             const $input = $(input);
             const msgSpanId = `${$input.attr('name')}-msg`;
-
+            //console.log('ariaDescribeReviewInputs');
             $input.siblings('span').attr('id', msgSpanId);
             $input.attr('aria-describedby', msgSpanId);
         });
+        //console.log('ariaDescribeReviewInputs2');
     }
 
     productReviewHandler() {

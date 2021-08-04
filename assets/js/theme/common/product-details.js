@@ -19,13 +19,13 @@ export default class ProductDetails extends ProductDetailsBase {
         this.$overlay = $('[data-cart-item-add] .loadingOverlay');
         this.imageGallery = new ImageGallery($('[data-image-gallery]', this.$scope));
         this.imageGallery.init();
-        this.listenQuantityChange();
+        this.listenQuantityChange(); //listen quantity change
         this.$swatchOptionMessage = $('.swatch-option-message');
         this.swatchInitMessageStorage = {};
         this.swatchGroupIdList = $('[id^="swatchGroup"]').map((_, group) => $(group).attr('id'));
         this.storeInitMessagesForSwatches();
 
-        const $form = $('form[data-cart-item-add]', $scope);
+        const $form = $('form[data-cart-item-add]', $scope); //form add to cart
 
         this.addToCartValidator = nod({
             submit: $form.find('input#form-action-addToCart'),
@@ -33,9 +33,24 @@ export default class ProductDetails extends ProductDetailsBase {
         });
 
         const $productOptionsElement = $('[data-product-option-change]', $form);
-        const hasOptions = $productOptionsElement.html().trim().length;
-        const hasDefaultOptions = $productOptionsElement.find('[data-default]').length;
-        const $productSwatchGroup = $('[id*="attribute_swatch"]', $form);
+        console.log('$productOptionsElement', $productOptionsElement);
+        const hasOptions = $productOptionsElement.html().trim().length; //trim() removes whitespace from the beginning and end of the string.
+
+       // console.log('$productOptionsElement.html()', $productOptionsElement.html().trim());
+
+        const hasDefaultOptions = $productOptionsElement.find('[data-default]').length; //Variant Options default, add to input data-default=""
+
+        const $productSwatchGroup = $('[id*="attribute_swatch"]', $form);//
+        console.log('$productSwatchGroup', $productSwatchGroup);
+
+        /*Custom add js*/
+        const $productInputText = $('[id*="attribute_text"]');
+        console.log('$productInputText', $productInputText);
+        const productInputTextValueLength = $productInputText.find('value').prevObject[0].value.length;
+        //
+        console.log("productInputTextValueLength", productInputTextValueLength);
+
+
         const $productSwatchLabels = $('.form-option-swatch', $form);
         const placeSwatchLabelImage = (_, label) => {
             const $optionImage = $('.form-option-expanded', $(label));
@@ -97,11 +112,11 @@ export default class ProductDetails extends ProductDetailsBase {
         }
 
         $productOptionsElement.show();
-
+        console.log('$productOptionsElement', $productOptionsElement.show());
         this.previewModal = modalFactory('#previewModal')[0];
     }
 
-
+    //validation ????
     registerAddToCartValidation() {
         this.addToCartValidator.add([{
             selector: '[data-quantity-change] > .form-input--incrementTotal',
@@ -115,6 +130,7 @@ export default class ProductDetails extends ProductDetailsBase {
         return this.addToCartValidator;
     }
 
+    //messages
     storeInitMessagesForSwatches() {
         if (this.swatchGroupIdList.length && isEmpty(this.swatchInitMessageStorage)) {
             this.swatchGroupIdList.each((_, swatchGroupId) => {
@@ -136,7 +152,7 @@ export default class ProductDetails extends ProductDetailsBase {
             const type = value.getAttribute('data-product-attribute');
 
             if ((type === 'input-file' || type === 'input-text' || type === 'input-number') && value.querySelector('input').value === '' && required) {
-                //unsatisfiedRequiredFields.push(value);
+                unsatisfiedRequiredFields.push(value);
             }
 
             if (type === 'textarea' && value.querySelector('textarea').value === '' && required) {
@@ -246,6 +262,7 @@ export default class ProductDetails extends ProductDetailsBase {
      */
     productOptionsChanged(event) {
         const $changedOption = $(event.target);
+        console.log('$changedOption', $changedOption);
         const $form = $changedOption.parents('form');
         const productId = $('[name="product_id"]', $form).val();
 
@@ -253,11 +270,15 @@ export default class ProductDetails extends ProductDetailsBase {
         if ($changedOption.attr('type') === 'file' || window.FormData === undefined) {
             return;
         }
-
         utils.api.productAttributes.optionChange(productId, $form.serialize(), 'products/bulk-discount-rates', (err, response) => {
-            const productAttributesData = response.data || {};
+            const productAttributesData = response.data || {}; //response  {data {}, content: ""}
+//            console.log('response', response);
+//            console.log('response.data', response.data.price.without_tax.value);
+
             const productAttributesContent = response.content || {};
             this.updateProductAttributes(productAttributesData);
+
+            console.log('this', this);
             this.updateView(productAttributesData, productAttributesContent);
             bannerUtils.dispatchProductBannerEvent(productAttributesData);
 
@@ -381,6 +402,7 @@ export default class ProductDetails extends ProductDetailsBase {
      */
     addProductToCart(event, form) {
         const $addToCartBtn = $('#form-action-addToCart', $(event.target));
+        console.log('$(event.target)', event);
 
         const originalBtnVal = $addToCartBtn.val();
         console.log('originalBtnVal', originalBtnVal);
@@ -466,8 +488,8 @@ export default class ProductDetails extends ProductDetailsBase {
                 },
             },
         };
-
         utils.api.cart.getContent(options, onComplete);
+
     }
 
     /**
@@ -503,6 +525,7 @@ export default class ProductDetails extends ProductDetailsBase {
             const $cartQuantity = $('[data-cart-quantity]', modal.$content);
             const $cartCounter = $('.navUser-action .cart-count');
             const quantity = $cartQuantity.data('cartQuantity') || 0;
+            //console.log('$cartQuantity', $cartQuantity);
             const $promotionBanner = $('[data-promotion-banner]');
             const $backToShopppingBtn = $('.previewCartCheckout > [data-reveal-close]');
             const $modalCloseBtn = $('#previewModal > .modal-close');
@@ -535,5 +558,6 @@ export default class ProductDetails extends ProductDetailsBase {
     updateProductAttributes(data) {
         super.updateProductAttributes(data);
         this.showProductImage(data.image);
+
     }
 }
