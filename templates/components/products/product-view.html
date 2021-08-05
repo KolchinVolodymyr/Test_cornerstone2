@@ -230,6 +230,9 @@
 
 
                 <div data-product-option-change style="display:none;">
+                    <!--ModifierOptions-->
+                    {{inject 'ModifierOptions' product.options}}
+
                     {{inject 'showSwatchNames' theme_settings.show_product_swatch_names}}
                         {{#if customer}}
                             {{#if product.price.without_tax.value '>=' 50}}

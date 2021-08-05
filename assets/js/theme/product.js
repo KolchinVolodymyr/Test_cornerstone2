@@ -36,7 +36,7 @@ export default class Product extends PageManager {
         this.productDetails = new ProductDetails($('.productView'), this.context, window.BCData.product_attributes);
 
         //found the price on the page
-        console.log('window.BCData.product_attributes PRICE without_tax value', window.BCData.product_attributes.price.without_tax.value);
+        //console.log('window.BCData.product_attributes PRICE without_tax value', window.BCData.product_attributes.price.without_tax.value);
 
         this.productDetails.setProductVariant();
 

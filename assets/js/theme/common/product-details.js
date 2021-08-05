@@ -33,7 +33,7 @@ export default class ProductDetails extends ProductDetailsBase {
         });
 
         const $productOptionsElement = $('[data-product-option-change]', $form);
-        console.log('$productOptionsElement', $productOptionsElement);
+       // console.log('$productOptionsElement', $productOptionsElement);
         const hasOptions = $productOptionsElement.html().trim().length; //trim() removes whitespace from the beginning and end of the string.
 
        // console.log('$productOptionsElement.html()', $productOptionsElement.html().trim());
@@ -41,14 +41,14 @@ export default class ProductDetails extends ProductDetailsBase {
         const hasDefaultOptions = $productOptionsElement.find('[data-default]').length; //Variant Options default, add to input data-default=""
 
         const $productSwatchGroup = $('[id*="attribute_swatch"]', $form);//
-        console.log('$productSwatchGroup', $productSwatchGroup);
+       // console.log('$productSwatchGroup', $productSwatchGroup);
 
         /*Custom add js*/
-        const $productInputText = $('[id*="attribute_text"]');
-        console.log('$productInputText', $productInputText);
-        const productInputTextValueLength = $productInputText.find('value').prevObject[0].value.length;
-        //
-        console.log("productInputTextValueLength", productInputTextValueLength);
+//        const $productInputText = $('[id*="attribute_text"]');
+//        console.log('$productInputText', $productInputText);
+//        const productInputTextValueLength = $productInputText.find('value').prevObject[0].value.length;
+//        //
+//        console.log("productInputTextValueLength", productInputTextValueLength);
 
 
         const $productSwatchLabels = $('.form-option-swatch', $form);
@@ -112,7 +112,7 @@ export default class ProductDetails extends ProductDetailsBase {
         }
 
         $productOptionsElement.show();
-        console.log('$productOptionsElement', $productOptionsElement.show());
+        //console.log('$productOptionsElement', $productOptionsElement.show());
         this.previewModal = modalFactory('#previewModal')[0];
     }
 

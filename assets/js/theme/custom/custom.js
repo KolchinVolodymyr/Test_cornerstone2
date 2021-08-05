@@ -5,27 +5,59 @@ export default class Custom extends PageManager {
 
     onReady() {
 
-
-document.querySelector('#attribute_text_162').addEventListener('input', function() {
         /*
-        * Custom
+        * Custom JS
         */
-        const $productInputText = $('[id*="attribute_text"]');
-        //console.log('$productInputText', $productInputText);
-        const productInputTextValueLength = $productInputText.find('value').prevObject[0].value.length;
-        //console.log('productInputTextValueLength', productInputTextValueLength);
-        if(productInputTextValueLength>1) {
-            /**/
-            window.BCData.product_attributes.price.without_tax.value+10;
-            console.log('window.BCData.product_attributes.price.without_tax', window.BCData.product_attributes.price.without_tax.value);
-            const productId = $('[name="product_id"]').val();
-            console.log('productId', productId);
+        var EngravingLengthID = null;//global variable
+        var EngravingID = null;
 
-            /**/
-        }
+        this.context.ModifierOptions.forEach(item => {
+            //find an object whose name 'Engraving length'
+            //assign ID to our global variable EngravingLengthID
+            if(item.display_name === 'Engraving length') {
+                    EngravingLengthID = item.id;
+            }
+
+            //find an object whose name 'Engraving'
+            if(item.display_name === 'Engraving') {
+                //listener input
+                document.querySelector('[id*="attribute_text"]').addEventListener('input', function() {
+                        const $productInputText = $('[id*="attribute_text"]');
+                        console.log('$productInputText', $productInputText);
+                        console.log('EngravingLengthID', EngravingLengthID);
+                        const productInputTextValueLength = $productInputText.find('value').prevObject[0].value.length;
+
+                          $(`#attribute_select_${EngravingLengthID} > option`).each(function() { //Run through the loop of each option
+                            //this.text = <options>text</options>
+
+                            if(this.text.indexOf(productInputTextValueLength)>=0) { //Find if the string present as substring
+                                $(`#attribute_select_${EngravingLengthID} > option`).removeAttr("selected"); //Remove the existing selected option
+                                $(this).attr("selected","selected"); //Select this matching option as selected
+                                return false; //Return after first match is found
+                               }
+                            });
+                    });
+            }
+        });
 
 
-});
+//    document.querySelector('[id*="attribute_text"]').addEventListener('input', function() {
+//
+//        const $productInputText = $('[id*="attribute_text"]');
+//        console.log('$productInputText', $productInputText);
+//        const productInputTextValueLength = $productInputText.find('value').prevObject[0].value.length;
+//        //console.log('productInputTextValueLength', productInputTextValueLength);
+//
+//          $("#attribute_select_131 > option").each(function() { //Run through the loop of each option
+//            //this.text = <options>text</options>
+//            if(this.text.indexOf(productInputTextValueLength)>=0) { //Find if the string present as substring
+//                $("#attribute_select_131 > option").removeAttr("selected"); //Remove the existing selected option
+//                $(this).attr("selected","selected"); //Select this matching option as selected
+//                return false; //Return after first match is found
+//               }
+//            });
+//
+//    });
 
 
 
